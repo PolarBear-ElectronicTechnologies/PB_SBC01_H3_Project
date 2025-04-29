@@ -205,8 +205,9 @@ if __name__ == "__main__":
 
 ### Как запустить
 
-<<'Bash
-sudo python3 gpio_web_control.py>>'
+'''
+bash
+sudo python3 gpio_web_control.py
 
 После запуска откройте браузер на ПК и перейдите по адресу:
 '''copy
