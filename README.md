@@ -63,16 +63,25 @@ PB_SBC01_H3 можно использовать для:
 ### Что понадобится
 - Образ Armbian (.img или .img.xz) для совместимой платы (например, Orange Pi PC на Allwinner H3).
 - microSD карта минимум на 8–16 ГБ, желательно класс 10.
+- 
   ![](images/USB-адаптер.jpg)
+  
 - Картридер для подключения карты к ПК.
+  
   ![Убедитесь, что Ваше устройство видит картидер](images/Manager_DisplayTF-Cards(microSD)_CONNECT_THROUGH_USB-Adapter.jpg)
+  
   ![Не забудьте отформатировать карту перед новой записью, если раннее она использовалась](images/formatting_card.jpg)
+  
   
 ### Программы для записи образов
 Осовные и использованные для этого теста:
+
 ![](images/required_programmes.jpg)
+
 #### 1. Balena Etcher
+
 ![](images/programme_for_downloading-image-to_card.jpg)
+
 - Сайт: [https://www.balena.io/etcher/](https://www.balena.io/etcher/)
 - Очень простая программа для записи .img файлов.
 - Инструкция:
@@ -81,12 +90,19 @@ PB_SBC01_H3 можно использовать для:
   3. Выбрать microSD карту.
   4. Нажать Flash.
 После успешной загрузки образа Вы можете извлечь карту из USB-адаптера и вставить в разъём на плате.
+
 ![](images/image_recording_card.jpg)
+
 Затем подайте питание на плату и подождите загрузки системв (*это может занять  от 30 - 60 секунд*)
+
 ![](images/connection_step2.jpg)
+
 ![](images/connection_step_3.jpg)
+
 #### 2. Win32DiskImager
+
  ![Win32DiskImager](images/alternative_card.jpg)
+ 
 - Сайт: [https://sourceforge.net/projects/win32diskimager/](https://sourceforge.net/projects/win32diskimager/)
 - Подходит для Windows. Прост в использовании.
 - Инструкция:
@@ -101,9 +117,13 @@ PB_SBC01_H3 можно использовать для:
   
  ** Если плату не видно, то вы можете вручную задать мея сети и пароль, чтобы плата при первом включениисмогла сама найти сеть. Вы же увидите имя ( IP) в приложении Advanced IP Scanner:**
 - Программа для добавления настроечного файля в boot для подключения к сети WI-FI
+  
   ![](images/programme_downloading_password_network.png)
+  
 - Программа для сканирования устройств подключенных к сети
+  
     ![](images/software_to_search_for_device_name_network.jpg)
+  
   
 ## Часть 2. Подключение платы к сети без монитора
 
@@ -124,6 +144,7 @@ WIFI_NETWORK_PASSWORD='Пароль_от_WiFi'
 3. После старта плата подключится к Wi-Fi автоматически.
 
 ### ![Подключение через  MobaXterm](images/MobaXterm.jpg)
+
 Подключиться можно и стандартным способом по SSH-соединению, если Вы уже имели опыт работы с платой и созранили базовые настройки подключения, либо согласно алгоритму прописанному в  нашей документации к плате, можно подключить вручную вводом имени и пароля.
 Прописывать все те же команды в открывшемся терминале.
 
@@ -184,8 +205,8 @@ if __name__ == "__main__":
 
 ### Как запустить
 
-'''Bash
-sudo python3 gpio_web_control.py
+<<'Bash
+sudo python3 gpio_web_control.py>>'
 
 После запуска откройте браузер на ПК и перейдите по адресу:
 '''copy
