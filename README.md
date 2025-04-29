@@ -65,12 +65,14 @@ PB_SBC01_H3 можно использовать для:
 - microSD карта минимум на 8–16 ГБ, желательно класс 10.
   ![](images/USB-адаптер.jpg)
 - Картридер для подключения карты к ПК.
-  ![Не забудьте отформатировать карту перед новой записью, если раннее она использовалась](images/форматирование карты для дальнейшй загрузки образа.jpg)
+  ![Убедитесь, что Ваше устройство видит картидер](images/Manager_DisplayTF-Cards(microSD)_CONNECT_THROUGH_USB-Adapter.jpg)
+  ![Не забудьте отформатировать карту перед новой записью, если раннее она использовалась](images/formatting_card.jpg)
   
 ### Программы для записи образов
-
+Осовные и использованные для этого теста:
+![](images/required_programmes.jpg)
 #### 1. Balena Etcher
- ![](images/программа для загрузки образа на карту.jpg)
+![](images/programme_for_downloading-image-to_card.jpg)
 - Сайт: [https://www.balena.io/etcher/](https://www.balena.io/etcher/)
 - Очень простая программа для записи .img файлов.
 - Инструкция:
@@ -78,9 +80,13 @@ PB_SBC01_H3 можно использовать для:
   2. Выбрать образ .img или .img.xz.
   3. Выбрать microSD карту.
   4. Нажать Flash.
-
+После успешной загрузки образа Вы можете извлечь карту из USB-адаптера и вставить в разъём на плате.
+![](images/image_recording_card.jpg)
+Затем подайте питание на плату и подождите загрузки системв (*это может занять  от 30 - 60 секунд*)
+![](images/connection_step2.jpg)
+![](images/connection_step_3.jpg)
 #### 2. Win32DiskImager
- ![](images/альтернативная программа для записи образа на карту.jpg)
+ ![Win32DiskImager](images/alternative_card.jpg)
 - Сайт: [https://sourceforge.net/projects/win32diskimager/](https://sourceforge.net/projects/win32diskimager/)
 - Подходит для Windows. Прост в использовании.
 - Инструкция:
@@ -92,8 +98,13 @@ PB_SBC01_H3 можно использовать для:
 ### Особенности работы с картой памяти после записи
 - Windows может предложить "форматировать диск" — откажитесь.
 - Если виден раздел boot, можно туда добавить настройки Wi-Fi (armbian_first_run.txt).
-
-
+  
+ ** Если плату не видно, то вы можете вручную задать мея сети и пароль, чтобы плата при первом включениисмогла сама найти сеть. Вы же увидите имя ( IP) в приложении Advanced IP Scanner:**
+- Программа для добавления настроечного файля в boot для подключения к сети WI-FI
+  ![](images/programme_downloading_password_network.png)
+- Программа для сканирования устройств подключенных к сети
+    ![](images/software_to_search_for_device_name_network.jpg)
+  
 ## Часть 2. Подключение платы к сети без монитора
 
 Если нет доступа к HDMI или UART, можно заранее настроить Wi-Fi:
@@ -122,18 +133,14 @@ WIFI_NETWORK_PASSWORD='Пароль_от_WiFi'
 - Установленная ОС Armbian на плате.
 - Рабочее подключение к сети.
 - Установленный Python 3 и Flask:
-Bash
-
-
+''' Bash
 sudo apt update
 sudo apt install python3-flask -y
 
 ### Код сервера для управления светодиодом
 Создайте файл gpio_web_control.py:
 
-Python
-
-
+'''Python
 from flask import Flask, render_template_string, request
 import os
 
@@ -174,17 +181,14 @@ def control():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
 
+
 ### Как запустить
 
-Bash
-
-
+'''Bash
 sudo python3 gpio_web_control.py
 
 После запуска откройте браузер на ПК и перейдите по адресу:
-copy
-
-
+'''copy
 http://<IP_платы>:8080
 
 > Вы увидите страницу с кнопками для управления светодиодом через интернет, если вс Ваши шаги выполнены верно.
