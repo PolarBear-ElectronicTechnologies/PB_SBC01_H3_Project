@@ -55,3 +55,120 @@ PB_SBC01_H3 можно использовать для:
 ---
 
 > Документация и инструкции по настройке доступны в комплекте поставки.
+
+ ## Рассмотрим пример применения данной платы для удаленного управления GPIO-контактами через Web-интерфейс
+ # Подробная инструкция для записи образов Armbian и начального управления GPIO через интернет
+
+## Часть 1. Подготовка образа Armbian на microSD карту
+
+### Что понадобится
+- Образ Armbian (.img или .img.xz) для совместимой платы (например, Orange Pi PC на Allwinner H3).
+- microSD карта минимум на 8–16 ГБ, желательно класс 10.
+- Картридер для подключения карты к ПК.
+
+### Программы для записи образов
+
+#### 1. Balena Etcher
+- Сайт: [https://www.balena.io/etcher/](https://www.balena.io/etcher/)
+- Очень простая программа для записи .img файлов.
+- Инструкция:
+  1. Установить и запустить.
+  2. Выбрать образ .img или .img.xz.
+  3. Выбрать microSD карту.
+  4. Нажать Flash.
+
+#### 2. Win32DiskImager
+- Сайт: [https://sourceforge.net/projects/win32diskimager/](https://sourceforge.net/projects/win32diskimager/)
+- Подходит для Windows. Прост в использовании.
+- Инструкция:
+  1. Запустить программу.
+  2. Выбрать файл образа.
+  3. Выбрать букву устройства для карты памяти.
+  4. Нажать Write.
+
+### Особенности работы с картой памяти после записи
+- Windows может предложить "форматировать диск" — откажитесь.
+- Если виден раздел boot, можно туда добавить настройки Wi-Fi (armbian_first_run.txt).
+
+
+## Часть 2. Подключение платы к сети без монитора
+
+Если нет доступа к HDMI или UART, можно заранее настроить Wi-Fi:
+
+1. Создать текстовый файл armbian_first_run.txt.
+
+Пример содержимого:
+FIRST_LOGIN_USER_NAME=root
+FIRST_LOGIN_USER_PASSWORD=1234
+WIFI_NETWORK_NAME='Название_вашей_сети'
+WIFI_NETWORK_PASSWORD='Пароль_от_WiFi'
+
+2. Скопировать файл в раздел boot карты памяти перед первым запуском платы.
+3. После старта плата подключится к Wi-Fi автоматически.
+
+
+## Часть 3. Управление GPIO через интернет (через Flask веб-сервер)
+
+### Требования
+- Установленная ОС Armbian на плате.
+- Рабочее подключение к сети.
+- Установленный Python 3 и Flask:
+sudo apt update
+sudo apt install python3-flask -y
+
+### Код сервера для управления светодиодом
+Создайте файл gpio_web_control.py:
+
+from flask import Flask, render_template_string, request
+import os
+
+app = Flask(__name__)
+
+GPIO = "15"  # Номер GPIO-пина
+gpio_path = f"/sys/class/gpio/gpio{GPIO}/value"
+
+# Инициализация GPIO
+if not os.path.exists(f"/sys/class/gpio/gpio{GPIO}"):
+    with open("/sys/class/gpio/export", "w") as f:
+        f.write(GPIO)
+with open(f"/sys/class/gpio/gpio{GPIO}/direction", "w") as f:
+    f.write("out")
+
+# HTML страница управления
+HTML = '''
+<!doctype html>
+<title>GPIO Управление</title>
+<h2>GPIO{{ pin }} — Управление</h2>
+<form method="POST">
+    <button name="state" value="1">Включить</button>
+    <button name="state" value="0">Выключить</button>
+</form>
+<p>Текущее состояние: {{ state }}</p>
+'''
+
+@app.route("/", methods=["GET", "POST"])
+def control():
+    if request.method == "POST":
+        state = request.form["state"]
+        with open(gpio_path, "w") as f:
+            f.write(state)
+    with open(gpio_path, "r") as f:
+        current = f.read().strip()
+    return render_template_string(HTML, pin=GPIO, state=current)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+
+### Как запустить
+
+sudo python3 gpio_web_control.py
+
+После запуска откройте браузер на ПК и перейдите по адресу:
+http://<IP_платы>:8080
+
+> Вы увидите страницу с кнопками для управления светодиодом через интернет, если вс Ваши шаги выполнены верно.
+> На пуказанных изображениях приведена информаци по программ и взаимодействию с ними, а также альтернативные способы загрузки образа для первой прошивки. Стандартный способ есть у нас в документации на сайте или по запросу Вы можете ознакомиться с ним.
+
+
+
+
