@@ -182,23 +182,38 @@ HTML=
 <title>GPIO Управление</title>
 
 <h2> GPIO{{ pin }} — Управление</h2>
+
 <form method="POST">
+  
     <button name="state" value="1">Включить</button>
+    
     <button name="state" value="0">Выключить</button>
 </form>
+
 <p>Текущее состояние: {{ state }}</p>
 
+
 @app.route("/", methods=["GET", "POST"])
+
 def control():
+
     if request.method == "POST":
+    
         state = request.form["state"]
+        
         with open(gpio_path, "w") as f:
+        
             f.write(state)
+            
     with open(gpio_path, "r") as f:
+    
         current = f.read().strip()
+
+        
     return render_template_string(HTML, pin=GPIO, state=current)
 
 if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=8080)
 
 
@@ -206,10 +221,12 @@ if __name__ == "__main__":
 
 
 bash
+
 sudo python3 gpio_web_control.py
 
 После запуска откройте браузер на ПК и перейдите по адресу:
 copy
+
 http://<IP_платы>:8080
 
 > Вы увидите страницу с кнопками для управления светодиодом через интернет, если вс Ваши шаги выполнены верно.
