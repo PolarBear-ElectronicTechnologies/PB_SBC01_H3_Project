@@ -63,7 +63,7 @@ PB_SBC01_H3 можно использовать для:
 ### Что понадобится
 - Образ Armbian (.img или .img.xz) для совместимой платы (например, Orange Pi PC на Allwinner H3).
 - microSD карта минимум на 8–16 ГБ, желательно класс 10.
-- 
+ 
   ![](images/USB-адаптер.jpg)
   
 - Картридер для подключения карты к ПК.
@@ -180,7 +180,8 @@ with open(f"/sys/class/gpio/gpio{GPIO}/direction", "w") as f:
 HTML=
 <!doctype html>
 <title>GPIO Управление</title>
-<h2>GPIO{{ pin }} — Управление</h2>
+
+<h2> GPIO{{ pin }} — Управление</h2>
 <form method="POST">
     <button name="state" value="1">Включить</button>
     <button name="state" value="0">Выключить</button>
