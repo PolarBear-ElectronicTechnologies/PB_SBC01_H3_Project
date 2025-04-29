@@ -133,8 +133,6 @@ PB_SBC01_H3 можно использовать для:
 
 Пример содержимого:
 Ini
-
-
 FIRST_LOGIN_USER_NAME=root
 FIRST_LOGIN_USER_PASSWORD=1234
 WIFI_NETWORK_NAME='Название_вашей_сети'
@@ -145,7 +143,7 @@ WIFI_NETWORK_PASSWORD='Пароль_от_WiFi'
 
 ### ![Подключение через  MobaXterm](images/MobaXterm.jpg)
 
-Подключиться можно и стандартным способом по SSH-соединению, если Вы уже имели опыт работы с платой и созранили базовые настройки подключения, либо согласно алгоритму прописанному в  нашей документации к плате, можно подключить вручную вводом имени и пароля.
+Подключиться можно и стандартным способом по SSH-соединению, если Вы уже имели опыт работы с платой и сохранили базовые настройки подключения, либо согласно алгоритму, прописанному в  нашей документации к плате [PB](https://pb-embedded.ru/pbsbc01h3), можно подключить вручную вводом имени и пароля.
 Прописывать все те же команды в открывшемся терминале.
 
 ## Часть 3. Управление GPIO через интернет (через Flask веб-сервер)
@@ -154,14 +152,14 @@ WIFI_NETWORK_PASSWORD='Пароль_от_WiFi'
 - Установленная ОС Armbian на плате.
 - Рабочее подключение к сети.
 - Установленный Python 3 и Flask:
-''' Bash
-sudo apt update
-sudo apt install python3-flask -y
+ Bash
+*sudo apt update*
+*sudo apt install python3-flask -y*
 
 ### Код сервера для управления светодиодом
 Создайте файл gpio_web_control.py:
 
-'''Python
+Python
 from flask import Flask, render_template_string, request
 import os
 
@@ -171,14 +169,15 @@ GPIO = "15"  # Номер GPIO-пина
 gpio_path = f"/sys/class/gpio/gpio{GPIO}/value"
 
 # Инициализация GPIO
-if not os.path.exists(f"/sys/class/gpio/gpio{GPIO}"):
+*if not 
+os.path.exists(f"/sys/class/gpio/gpio{GPIO}"):
     with open("/sys/class/gpio/export", "w") as f:
         f.write(GPIO)
 with open(f"/sys/class/gpio/gpio{GPIO}/direction", "w") as f:
-    f.write("out")
-
+    f.write("out")*
+    
 # HTML страница управления
-HTML = '''
+HTML=
 <!doctype html>
 <title>GPIO Управление</title>
 <h2>GPIO{{ pin }} — Управление</h2>
@@ -187,7 +186,6 @@ HTML = '''
     <button name="state" value="0">Выключить</button>
 </form>
 <p>Текущее состояние: {{ state }}</p>
-'''
 
 @app.route("/", methods=["GET", "POST"])
 def control():
@@ -205,12 +203,12 @@ if __name__ == "__main__":
 
 ### Как запустить
 
-'''
+
 bash
 sudo python3 gpio_web_control.py
 
 После запуска откройте браузер на ПК и перейдите по адресу:
-'''copy
+copy
 http://<IP_платы>:8080
 
 > Вы увидите страницу с кнопками для управления светодиодом через интернет, если вс Ваши шаги выполнены верно.
