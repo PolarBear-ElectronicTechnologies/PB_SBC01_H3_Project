@@ -68,13 +68,13 @@ PB_SBC01_H3 можно использовать для:
   
 - Картридер для подключения карты к ПК.
   
-  ![Убедитесь, что Ваше устройство видит картидер](images/Manager_DisplayTF-Cards(microSD)_CONNECT_THROUGH_USB-Adapter.jpg)
+  ![Убедитесь, что Ваше устройство видит картридер](images/Manager_DisplayTF-Cards(microSD)_CONNECT_THROUGH_USB-Adapter.jpg)
   
   ![Не забудьте отформатировать карту перед новой записью, если раннее она использовалась](images/formatting_card.jpg)
   
   
 ### Программы для записи образов
-Осовные и использованные для этого теста:
+Основные и использованные для этого теста:
 
 ![](images/required_programmes.jpg)
 
